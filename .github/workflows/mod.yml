@@ -70,6 +70,6 @@ jobs:
           NN_MODID_CASES: ${{ github.workspace }}\ci\modid-cases.json
           TAG: ${{ github.ref_type == 'tag' && github.ref_name || '' }}
         run: |
-          $checkArgs = @('-Repo', 'mod')
-          if ($env:TAG) { $checkArgs += @('-Tag', $env:TAG) }
+          $checkArgs = @{ Repo = 'mod' }
+          if ($env:TAG) { $checkArgs.Tag = $env:TAG }
           ./ci/check.ps1 @checkArgs
