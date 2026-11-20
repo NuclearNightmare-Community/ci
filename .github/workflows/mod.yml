@@ -33,8 +33,8 @@ jobs:
           NUCLEUS_REF: ${{ inputs.nucleus-ref }}
         run: |
           $bad = @()
-          if ($env:CI_REF -cnotmatch '^[0-9a-f]{40}$') { $bad += "input ci-ref must be a full 40-hex ci commit SHA (got '$env:CI_REF')" }
-          if ($env:NUCLEUS_REF -and $env:NUCLEUS_REF -cnotmatch '^(v[0-9A-Za-z.+-]{1,64}|[0-9a-f]{40})$') { $bad += "input nucleus-ref must be '', a v* tag or a 40-hex commit SHA (got '$env:NUCLEUS_REF')" }
+          if ($env:CI_REF -cnotmatch '\A[0-9a-f]{40}\z') { $bad += "input ci-ref must be a full 40-hex ci commit SHA (got '$env:CI_REF')" }
+          if ($env:NUCLEUS_REF -and $env:NUCLEUS_REF -cnotmatch '\A(v[0-9A-Za-z.+-]{1,64}|[0-9a-f]{40})\z') { $bad += "input nucleus-ref must be '', a v* tag or a 40-hex commit SHA (got '$env:NUCLEUS_REF')" }
           foreach ($b in $bad) { Write-Output "::error::$b" }
           if ($bad) { exit 1 }
 

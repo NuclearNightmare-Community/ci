@@ -75,7 +75,7 @@ Both values are the same full commit SHA; the workflow fails before it checks an
 Nothing here has been pushed. In this order:
 
 1. Create the public repo `NuclearNightmare-Community/ci` (no template, no README) and push this repo's `main` to it, so the commit the mod repos pin exists on GitHub before anything calls it. Optionally tag that commit `v0.1.0` to match the `# v0.1.0` comments.
-2. Create each mod repo (`NuclearNightmare-Community/<repo name>`: `nucleus`, `waypoints`, `hud-clock`, `custom-difficulty`, `imposter-panel-fix`, `whistle-mute`, `random-mode`, `mod-manager`) and push its `main`. Push `nucleus` before `mod-manager`, and push Nucleus's tag named by the Mod Manager's `nucleus-ref`. Every push runs the check; confirm it passes.
+2. Create the mod repos that don't exist on GitHub yet (`NuclearNightmare-Community/<repo name>`; at present `imposter-panel-fix` and `random-mode`, the two without an `origin` remote; `nucleus`, `waypoints`, `hud-clock`, `custom-difficulty`, `whistle-mute` and `mod-manager` already exist), then push each mod repo's `main`. Push `nucleus` before `mod-manager`, and push Nucleus's tag named by the Mod Manager's `nucleus-ref`. Every push runs the check; confirm it passes.
 3. In each mod repo, add a ruleset on `main` that requires the status check `ci / check` (and blocks force pushes and deletion).
 4. In the organization's Actions settings, allow only actions from the organization plus `actions/checkout`, and require full-length commit SHAs for actions if offered.
 5. After any change here: merge it to `main`, push, then run `tools/ci/pin.ps1` in the workspace and commit and push each mod repo's `ci.yml`.

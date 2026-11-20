@@ -133,6 +133,8 @@ try {
     $pinCases = @(
         @{ Ci = 'main'; Nucleus = ''; Code = 1; Want = "input ci-ref must be a full 40-hex ci commit SHA (got 'main')" },
         @{ Ci = '0123456789ABCDEF0123456789abcdef01234567'; Nucleus = ''; Code = 1; Want = 'input ci-ref' },
+        @{ Ci = "0123456789abcdef0123456789abcdef01234567`n"; Nucleus = ''; Code = 1; Want = 'input ci-ref' },
+        @{ Ci = '0123456789abcdef0123456789abcdef01234567'; Nucleus = "v0.15.0`n"; Code = 1; Want = 'input nucleus-ref' },
         @{ Ci = '0123456789abcdef0123456789abcdef01234567'; Nucleus = ''; Code = 0; Want = $null },
         @{ Ci = '0123456789abcdef0123456789abcdef01234567'; Nucleus = 'v0.15.0'; Code = 0; Want = $null },
         @{ Ci = '0123456789abcdef0123456789abcdef01234567'; Nucleus = 'main; rm -rf /'; Code = 1; Want = 'input nucleus-ref' }
