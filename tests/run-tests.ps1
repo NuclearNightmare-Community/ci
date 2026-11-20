@@ -174,3 +174,4 @@ try {
 Write-Host ''
 Write-Host "run-tests: $script:passed passed, $script:failed failed"
 if ($script:failed) { exit 1 }
+exit 0
