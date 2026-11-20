@@ -1,0 +1,19 @@
+# A mod repo's caller, as tools/ci/pin.ps1 writes it: the same ci commit in `uses:` and `ci-ref`.
+name: ci
+
+on:
+  push:
+    branches: ['**']
+    tags: ['v*']
+  pull_request:
+
+# No default token permissions; the job asks only for what it needs.
+permissions: {}
+
+jobs:
+  ci:
+    permissions:
+      contents: read
+    uses: NuclearNightmare-Community/ci/.github/workflows/mod.yml@0123456789abcdef0123456789abcdef01234567 # v0.1.0
+    with:
+      ci-ref: 0123456789abcdef0123456789abcdef01234567

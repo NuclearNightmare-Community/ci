@@ -1,0 +1,14 @@
+{
+  "generatedBy": "tools/ci/sync.ps1 from the workspace's base-pack/base.json; do not edit",
+  "names": [
+    "BPML_GenericFunctions",
+    "BPModLoaderMod",
+    "CheatManagerEnablerMod",
+    "ConsoleCommandsMod",
+    "ConsoleEnablerMod",
+    "Keybinds",
+    "LineTraceMod",
+    "SplitScreenMod",
+    "shared"
+  ]
+}

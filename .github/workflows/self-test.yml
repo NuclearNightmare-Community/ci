@@ -1,0 +1,28 @@
+# Tests this repo itself: check.ps1 against fixture repos, the workflows' pins and actionlint (tests/run-tests.ps1).
+name: self-test
+
+on:
+  push:
+  pull_request:
+
+# No default token permissions; the job asks only for what it needs.
+permissions: {}
+
+jobs:
+  test:
+    runs-on: windows-2025
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up the pinned tools
+        shell: pwsh
+        run: ./setup.ps1
+
+      - name: Self-test
+        shell: pwsh
+        run: ./tests/run-tests.ps1

@@ -1,0 +1,33 @@
+{
+  "note": "Tools setup.ps1 downloads into .tools/, each pinned by exact version and SHA-256 and verified before use. Sources: lua.org, github.com releases and PSGallery only. sha256Source says where the hash comes from.",
+  "tools": [
+    {
+      "name": "lua",
+      "version": "5.4.7",
+      "url": "https://www.lua.org/ftp/lua-5.4.7.tar.gz",
+      "sha256": "9fbf5e28ef86c69858f6d3d34eccc32e911c1a28b4120ff3e84aaa70cfbf1e30",
+      "sha256Source": "published: https://www.lua.org/ftp/ (sum column)"
+    },
+    {
+      "name": "luacheck",
+      "version": "1.2.0",
+      "url": "https://github.com/lunarmodules/luacheck/releases/download/v1.2.0/luacheck.exe",
+      "sha256": "0f1c69c4d09f1ebb4d8df14c215e4553e2e639bd4cb7bf3c639b0daa6198317b",
+      "sha256Source": "computed once (2026-11-20); the release publishes a PGP signature (luacheck.exe.asc), no checksum"
+    },
+    {
+      "name": "PSScriptAnalyzer",
+      "version": "1.24.0",
+      "url": "https://www.powershellgallery.com/api/v2/package/PSScriptAnalyzer/1.24.0",
+      "sha256": "e86c97d44bb1bc8a1de35e753b85ea1d938f6f9f881639a181507e079bca4556",
+      "sha256Source": "computed once (2026-11-20) from the package whose SHA-512 matched PSGallery's published PackageHash (B8yVwiGk...Rb3RZQ==)"
+    },
+    {
+      "name": "actionlint",
+      "version": "1.7.7",
+      "url": "https://github.com/rhysd/actionlint/releases/download/v1.7.7/actionlint_1.7.7_windows_amd64.zip",
+      "sha256": "7f12f1801bca3d480d67aaf7774f4c2a6359a3ca8eebe382c95c10c9704aa731",
+      "sha256Source": "published: actionlint_1.7.7_checksums.txt in the same release"
+    }
+  ]
+}

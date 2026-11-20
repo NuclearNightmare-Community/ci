@@ -1,0 +1,4 @@
+# Tools setup.ps1 downloads and builds
+.tools/
+# Worktrees (work happens in one, then merges to main)
+.worktrees/

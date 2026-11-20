@@ -1,0 +1,75 @@
+# The shared check for every mod repo (README.md). A mod repo calls it from .github/workflows/ci.yml, pinned to a ci
+# commit twice: in `uses:` and in `ci-ref` (a called workflow can't learn its own commit, so it checks ci out at
+# ci-ref). tools/ci/pin.ps1 in the maintainer's workspace keeps the two equal.
+name: mod
+
+on:
+  workflow_call:
+    inputs:
+      ci-ref:
+        description: The ci commit (40 hex digits) this workflow is pinned to in the caller's `uses:`.
+        required: true
+        type: string
+      nucleus-ref:
+        description: A Nucleus tag or commit to check out beside the mod (for mods whose tests load core's Lua), or ''.
+        required: false
+        type: string
+        default: ''
+
+# No default token permissions; the job asks only for what it needs.
+permissions: {}
+
+jobs:
+  check:
+    runs-on: windows-2025
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - name: Check the pins
+        shell: pwsh
+        env:
+          CI_REF: ${{ inputs.ci-ref }}
+          NUCLEUS_REF: ${{ inputs.nucleus-ref }}
+        run: |
+          $bad = @()
+          if ($env:CI_REF -cnotmatch '^[0-9a-f]{40}$') { $bad += "input ci-ref must be a full 40-hex ci commit SHA (got '$env:CI_REF')" }
+          if ($env:NUCLEUS_REF -and $env:NUCLEUS_REF -cnotmatch '^(v[0-9A-Za-z.+-]{1,64}|[0-9a-f]{40})$') { $bad += "input nucleus-ref must be '', a v* tag or a 40-hex commit SHA (got '$env:NUCLEUS_REF')" }
+          foreach ($b in $bad) { Write-Output "::error::$b" }
+          if ($bad) { exit 1 }
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: mod
+          persist-credentials: false
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: NuclearNightmare-Community/ci
+          ref: ${{ inputs.ci-ref }}
+          path: ci
+          persist-credentials: false
+
+      - if: inputs.nucleus-ref != ''
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: NuclearNightmare-Community/nucleus
+          ref: ${{ inputs.nucleus-ref }}
+          path: nucleus
+          persist-credentials: false
+
+      - name: Set up the pinned tools
+        shell: pwsh
+        run: ./ci/setup.ps1
+
+      - name: Check
+        shell: pwsh
+        env:
+          NN_CI: '1'
+          NN_NUCLEUS: ${{ inputs.nucleus-ref != '' && format('{0}\nucleus', github.workspace) || '' }}
+          NN_MODID_CASES: ${{ github.workspace }}\ci\modid-cases.json
+          TAG: ${{ github.ref_type == 'tag' && github.ref_name || '' }}
+        run: |
+          $checkArgs = @('-Repo', 'mod')
+          if ($env:TAG) { $checkArgs += @('-Tag', $env:TAG) }
+          ./ci/check.ps1 @checkArgs
